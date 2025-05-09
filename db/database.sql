@@ -6,14 +6,14 @@ CREATE TABLE IF NOT EXISTS Players(
     PRIMARY KEY(player_id)
 );
 
-CREATE TABLE IF NOT EXISTS Waiting-List(
+CREATE TABLE IF NOT EXISTS Waiting_List(
     player_id INTEGER NOT NULL,
     entered_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(player_id),
     FOREIGN KEY(player_id) REFERENCES Players(player_id)
 );
 
-CREATE TABLE IF NOT EXISTS Players-Games(
+CREATE TABLE IF NOT EXISTS Players_Games(
     game_id INTEGER NOT NULL AUTO_INCREMENT,
     player1_id INTEGER NOT NULL,
     player2_id INTEGER NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS Games(
     game_status VARCHAR(15) NOT NULL,
     game_result VARCHAR(15) NOT NULL,
     PRIMARY KEY(game_id),
-    FOREIGN KEY(game_id) REFERENCES Player-Game(game_id)
+    FOREIGN KEY(game_id) REFERENCES Player_Game(game_id)
 );
 
 CREATE TABLE IF NOT EXISTS Turns(
