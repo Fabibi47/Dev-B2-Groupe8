@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model games {
+  game_id     Int    @id @default(autoincrement())
+  game_board  String @db.VarChar(9)
+  game_status String @db.VarChar(15)
+  game_result String @db.VarChar(15)
+}
+
+model players {
+  player_id          Int    @id @default(autoincrement())
+  username           String @db.VarChar(15)
+  password           String @db.VarChar(255)
+  matchmaking_rating Int?   @default(500)
+}
+
+model players_games {
+  game_id    Int @id @default(autoincrement())
+  player1_id Int
+  player2_id Int
+
+  @@index([player1_id], map: "player1_id")
+  @@index([player2_id], map: "player2_id")
+}
+
+model turns {
+  turn_id     Int    @id @default(autoincrement())
+  game_id     Int
+  player_id   Int
+  move_played String @db.VarChar(9)
+
+  @@index([game_id], map: "game_id")
+  @@index([player_id], map: "player_id")
+}
+
+model waiting_list {
+  player_id    Int       @id
+  entered_date DateTime? @default(now()) @db.Timestamp(0)
+}
