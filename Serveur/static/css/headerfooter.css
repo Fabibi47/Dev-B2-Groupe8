@@ -1,0 +1,74 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: 'Playwrite';
+    src: url('../font/static/PlaywriteHU-Regular.ttf');
+}
+
+:root {
+    --primary-color: #6e85a7;
+    --secondary-color: #cbcccf;
+    --tertiary-color: #d64a4a;
+}
+
+body {
+    font-family: Playwrite;
+    background-color: var(--secondary-color);
+    min-height: 100vh;
+}
+
+header {
+    background-color: var(--primary-color);
+    padding: 20px;
+    text-align: center;
+    border-bottom: solid 3px var(--tertiary-color);
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+}
+
+header .websitename {
+    font-size: 25px;
+    color: white;
+    text-decoration: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+}
+
+header p, header a {
+    font-size: 18px;
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+header .icon {
+    background-image: url('../logo/account.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 25px;
+    width: 25px;
+}
+
+footer {
+    background-color: var(--primary-color);
+    padding: 20px 0px;
+    width: 100%;
+    text-align: center;
+    border-top: solid 3px var(--tertiary-color);
+    position: fixed;
+    bottom: 0;
+}
+
+footer p {
+    font-size: 1.5em;
+    color: white;
+}

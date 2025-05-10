@@ -1,0 +1,90 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: 'Playwrite';
+    src: url('../font/static/PlaywriteHU-Regular.ttf');
+}
+
+:root {
+    --primary-color: #6e85a7;
+    --secondary-color: #cbcccf;
+    --tertiary-color: #d64a4a;
+}
+
+.middle-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 175px);
+    width: 100%;
+}
+
+.middle-section p {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.play {
+    font-size: 30px;
+    color: var(--secondary-color);
+    text-align: center;
+    text-decoration: none;
+    background-color: var(--primary-color);
+    padding: 15px 50px;
+    border: 5px solid var(--tertiary-color);
+    border-radius: 50px;
+    transition: .5s;
+}
+
+.play:hover {
+    scale: 1.1;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 300px;
+    background-color: var(--primary-color);
+    padding: 20px;
+    border-radius: 10px;
+    border: 3px solid var(--tertiary-color);
+}
+
+form h2 {
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+}
+
+form input[type="text"], form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid var(--tertiary-color);
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+form button{
+    font-size: 20px;
+    color: var(--primary-color);
+    text-align: center;
+    text-decoration: none;
+    background-color: var(--secondary-color);
+    padding: 10px 50px;
+    border: 3px solid var(--tertiary-color);
+    border-radius: 50px;
+    transition: .5s;
+    margin: 20px 0px;
+}
+
+form button:hover {
+    scale: 1.1;
+}

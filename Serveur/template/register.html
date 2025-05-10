@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> TTT </title>
+    <link rel="stylesheet" href="../static/css/headerfooter.css">
+    <link rel="stylesheet" href="../static/css/index.css">
+</head>
+<body>
+    <header>
+        <p class="username"> Fabibite </p>
+        <a class="websitename" href="index.html"> Tic Tac Toe </a>
+        <a class="icon" href="login.html"></a>
+        <!-- <a> Log out </a> -->
+    </header>
+    
+    <div class="middle-section">
+        <form action="/register" method="POST">
+            <h2>Register</h2>
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            
+            <input type="password" name="password" placeholder="Password" required>
+
+            <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+            
+            <button type="submit">Login</button>
+            <p>Already have an account ? <a href="login.html">Login here</a></p>
+        </form>
+    </div>
+
+    <footer>
+        <p> By Fabio & Roméo </p>
+    </footer>
+</body>
+</html>

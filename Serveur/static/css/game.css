@@ -1,0 +1,41 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: 'Playwrite';
+    src: url('../font/static/PlaywriteHU-Regular.ttf');
+}
+
+:root {
+    --primary-color: #6e85a7;
+    --secondary-color: #cbcccf;
+    --tertiary-color: #d64a4a;
+}
+
+body {
+    font-family: Playwrite;
+    background-color: var(--secondary-color);
+    min-height: 100vh;
+}
+
+.middle-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 175px);
+    width: 100%;
+}
+
+.middle-section p {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.board {
+    width: 200px;
+    height: 200px;
+}
