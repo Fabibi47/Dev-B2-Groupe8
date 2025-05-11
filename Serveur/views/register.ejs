@@ -13,13 +13,13 @@
     <div class="middle-section">
         <form action="/register" method="POST">
             <h2>Register</h2>
-            <input type="text" id="username" name="username" placeholder="Username" required>
+            <div class="error hidden" > Unavailable username</div>
             
+            <input type="text" id="username" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
-
             <input type="password" name="confirm_password" placeholder="Confirm Password" required>
             
-            <button type="submit">Register</button>
+            <button type="submit">Login</button>
             <p>Already have an account ? <a href="login.html">Login here</a></p>
         </form>
     </div>
