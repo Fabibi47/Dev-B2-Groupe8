@@ -20,6 +20,26 @@ body {
     min-height: 100vh;
 }
 
+.banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 75%;
+    background-color: rgb(170, 128, 194);
+    border-radius: 0 0 20px 20px;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    position: absolute;
+    z-index: -1;
+    transition: .3s;
+}
+
+.out {
+    transform: translate(-50%, 0%);
+}
+
+
 .middle-section {
     display: flex;
     flex-direction: column;
@@ -35,7 +55,41 @@ body {
     margin-bottom: 20px;
 }
 
+.tour {
+    font-style: italic;
+}
+
 .board {
     width: 200px;
     height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: space-evenly;
+    gap: 5px;
 }
+
+.row {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 5px;
+}
+
+.cell {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--primary-color);
+    font-size: 40px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.cell:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
