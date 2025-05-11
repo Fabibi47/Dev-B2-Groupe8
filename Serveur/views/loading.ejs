@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> TTT </title>
+    <link rel="stylesheet" href="../static/css/headerfooter.css">
+    <link rel="stylesheet" href="../static/css/index.css">
+</head>
+<body>
+    <%- include('header.ejs'); %>
+    
+    <div class="middle-section">
+        <p> Searching for an opponent </p>
+        <div class="loading">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+    <%- include('footer.ejs'); %>
+
+    <script src="../static/js/loading.js"></script>
+</body>
+</html>

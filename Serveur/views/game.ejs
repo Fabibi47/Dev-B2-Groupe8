@@ -8,12 +8,7 @@
     <link rel="stylesheet" href="../static/css/game.css">
 </head>
 <body>
-    <header>
-        <p class="username"> Fabibite </p>
-        <a class="websitename" href="index.html"> Tic Tac Toe </a>
-        <a class="icon" href="login.html"></a>
-        <!-- <a> Log out </a> -->
-    </header>
+    <%- include('header.ejs') %>
     
     <div class="middle-section">
         <p> Adversaire : Ploufy</p>
@@ -22,9 +17,7 @@
         </div>
     </div>
 
-    <footer>
-        <p> By Fabio & Roméo </p>
-    </footer>
+    <%- include('footer.ejs'); %>
 
     <script src="../static/js/game.js"></script>
 </body>

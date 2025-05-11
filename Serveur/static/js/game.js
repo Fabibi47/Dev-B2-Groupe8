@@ -12,6 +12,56 @@ let myTurn = true; // true for player 1, false for player 2
 let playerSymbol = "X"; // Player 1 is X, Player 2 is O
 let winner = null;
 
+const socket = new WebSocket("ws://localhost:8080");
+
+socket.addEventListener("open", () => {
+    console.log("WebSocket connection established");
+});
+
+socket.addEventListener("message", (event) => {
+    const data = JSON.parse(event.data);
+
+    if (data.type === "init") {
+        playerSymbol = data.symbol;
+        myTurn = data.turn;
+        tour.innerHTML = myTurn ? "C'est votre tour !" : "En attente de l'adversaire...";
+    }
+
+    if (data.type === "move") {
+        UpdateBoard(data.board);
+        if (data.winner) {
+            winner = data.winner;
+            banner.innerHTML = winner === playerSymbol ? "Vous avez gagné !" : "Vous avez perdu !";
+            banner.classList.add("out");
+            myTurn = false;
+            tour.innerHTML = "Fin du jeu !";
+        } else if (data.draw) {
+            banner.innerHTML = "Match nul !";
+            banner.classList.add("out");
+            myTurn = false;
+            tour.innerHTML = "Fin du jeu !";
+        }
+    }
+});
+
+// Override cell click to send move to server
+board.addEventListener("click", function (event) {
+    if (!myTurn) return;
+    if (event.target.classList.contains("cell")) {
+        let row = event.target.getAttribute("data-row");
+        let col = event.target.getAttribute("data-col");
+        if (currentBoard[row][col] === "") {
+            socket.send(JSON.stringify({
+                type: "move",
+                row: Number(row),
+                col: Number(col),
+                symbol: playerSymbol
+            }));
+            // Do NOT update myTurn or UI here; wait for server response to update state
+        }
+    }
+});
+
 function CreateBoard() {
     // Crée le tableau
     for (let i = 0; i < 3; i++) {
@@ -43,10 +93,12 @@ function UpdateBoard(newBoard) {
             UpdateCell(i, j, newBoard[i][j]);
         }
     }
-    myTurn = true; // Change le tour
-    tour.innerHTML = "C'est votre tour !";
+    // Only set myTurn and tour if the game is not over
+    if (!winner) {
+        myTurn = true;
+        tour.innerHTML = "C'est votre tour !";
+    }
 }
-
 function CheckWin() {
     // Vérifie si un joueur a gagné
     for (let i = 0; i < 3; i++) {
@@ -78,32 +130,6 @@ function CheckDraw() {
     return true;
 }
 
-// On click event for cells
-board.addEventListener("click", function (event) {
-    if (!myTurn) return; // Only allow if it's the player's turn
-    if (event.target.classList.contains("cell")) {
-        let row = event.target.getAttribute("data-row");
-        let col = event.target.getAttribute("data-col");
-        if (currentBoard[row][col] === "") {
-            currentBoard[row][col] = playerSymbol; // Use the player's symbol
-            UpdateCell(row, col, playerSymbol);
-            if (CheckWin()) {
-                winner = playerSymbol;
-                banner.innerHTML = "Vous avez gagné !";
-                banner.classList.add("out");
-                myTurn = false; // End player's turn
-                tour.innerHTML = "Fin du jeu !";
-            }
-            if (CheckDraw() && !winner) {
-                banner.innerHTML = "Match nul !";
-                banner.classList.add("out");
-                myTurn = false; // End player's turn
-                tour.innerHTML = "Fin du jeu !";
-            }
-        }
-    }
-    myTurn = false; // End player's turn
-    tour.innerHTML = "En attente de l'adversaire...";
-});
+// (Removed duplicate local click event handler. All moves are now handled via WebSocket.)
 
 CreateBoard();
