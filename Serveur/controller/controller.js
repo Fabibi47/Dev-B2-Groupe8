@@ -23,24 +23,95 @@ const comparePassword = async (plainPassword, hashedPassword) => {
     }
 }
 
-exports.Login = async (req, res) => {
+
+exports.getLogin = async (req, res) => {
+    try{
+        // Si l'utilisateur est déjà connecté, il est regirigé vers la page d'accueil
+        res.render('login', { error: null, user: {username: null} });
+    }catch (error) {
+        console.error('Erreur lors de la récupération de la page de connexion :', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+}
+
+exports.postLogin = async (req, res) => {
     const { username, password } = req.body;
     try {
         const player = await Players.getPlayerByUsername(username);
         if (!player) {
-            return res.status(401).json({ message: 'Nom d\'utilisateur ou mot de passe incorrect' });
+            res.status(401).json({ message: 'Nom d\'utilisateur ou mot de passe incorrect' });
         }
 
         const isMatch = await comparePassword(password, player.password);
         if (!isMatch) {
-            return res.status(401).json({ message: 'Nom d\'utilisateur ou mot de passe incorrect' });
+            res.status(401).json({ message: 'Nom d\'utilisateur ou mot de passe incorrect' });
         }
 
         // Authentification réussie
-        req.session.playerId = player.player_id; // Stocker l'ID du joueur dans la session
-        return res.status(200).json({ message: 'Authentification réussie', playerId: player.player_id });
+        req.session.user = player.player_id; // Stocker l'username du joueur dans la session
+        res.redirect('/home');
     } catch (error) {
         console.error('Erreur lors de l\'authentification :', error);
-        return res.status(500).json({ message: 'Erreur serveur' });
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+}
+
+exports.getRegister = async (req, res) => {
+    try {
+        // Si l'utilisateur est déjà connecté, il est redirigé vers la page d'accueil
+        if (req.session.user) { 
+            res.redirect('/home');
+        } else {
+            res.render('register', { error: null, user: {username: null} });
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération de la page d\'inscription :', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+}
+
+exports.postRegister = async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        // Vérification si le nom d'utilisateur existe déjà
+        const existingPlayer = await Players.getPlayerByUsername(username);
+        if (existingPlayer) {
+            res.status(409).json({ message: 'Nom d\'utilisateur invalide' });
+        }
+
+        // Hachage du mot de passe
+        const hashedPassword = await hashPassword(password);
+        await Players.addPlayer(username, hashedPassword);
+
+        // Enregistrement réussi
+        res.redirect('/login');
+    } catch (error) {
+        console.error('Erreur lors de l\'inscription :', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+}
+
+exports.getHome = async (req, res) => {
+    try {
+        // Vérification si l'utilisateur est connecté
+        if (!req.session.user) {
+            res.redirect('/login');
+        } else {
+
+            // Récupération des informations du joueur
+
+            const player = await Players.getPlayer(req.session.user);
+            console.log(player);
+
+            const user = {
+                username: player.username,
+                mmr: player.matchmaking_rating
+            };
+
+            res.render('index', { user: user });
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération de la page d\'accueil :', error);
+        res.status(500).json({ message: 'Erreur serveur' });
     }
 }

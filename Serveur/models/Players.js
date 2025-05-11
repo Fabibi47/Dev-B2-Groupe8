@@ -4,7 +4,7 @@ class Players {
     static getPlayer(id) {
         const query = "SELECT * FROM Players WHERE player_id = ?;"
         return new Promise((resolve, reject) => {
-            connection.query(query, [Id], (err, results) => {
+            connection.query(query, [id], (err, results) => {
                 if (err) {
                     reject(err)
                 } else {
@@ -22,6 +22,19 @@ class Players {
                     reject(err)
                 } else {
                     resolve(results)
+                }
+            })
+        })
+    }
+
+    static getPlayerByUsername(username) {
+        const query = "SELECT * FROM Players WHERE username = ?;"
+        return new Promise((resolve, reject) => {
+            connection.query(query, [username], (err, results) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(results[0])
                 }
             })
         })

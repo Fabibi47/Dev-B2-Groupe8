@@ -1,0 +1,11 @@
+<header>
+    <% if (user.username) { %>
+        <p class="username"> <%= user.username %> </p>
+    <% } %>
+    <a class="websitename" href="/home"> Tic Tac Toe </a>
+    <% if (user.username) { %>
+        <a class="logout" href="/logout"> Log out </a>
+    <% } else { %>
+        <a class="icon" href="/login"></a>
+    <% } %>
+</header>

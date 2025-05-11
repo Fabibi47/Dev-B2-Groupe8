@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> TTT </title>
+    <link rel="stylesheet" href="../static/css/headerfooter.css">
+    <link rel="stylesheet" href="../static/css/index.css">
+</head>
+<body>
+    <%- include('header.ejs') %>
+    
+    <% if (user.mmr) { %>
+        <div class="middle-section">
+            <p> Current MMR: <%= user.mmr %> </p>
+            <a class="play" href="game.html"> Play </a>
+        </div>
+    <% } else { %>
+        <div class="middle-section">
+            <p> <a href='/login'> Log in </a> to play. </p>
+        </div>
+    <% } %>
+
+    <%- include('footer.ejs') %>
+</body>
+</html>
