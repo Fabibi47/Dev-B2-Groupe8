@@ -8,5 +8,6 @@ routeur.get('/register', controller.getRegister);
 routeur.post('/login', controller.postLogin);
 routeur.post('/register', controller.postRegister);
 routeur.get('/home', controller.getHome);
+routeur.get('/loading', controller.getLoading);
 
 module.exports = routeur;

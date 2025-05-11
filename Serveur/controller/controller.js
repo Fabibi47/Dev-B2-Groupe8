@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10; // Facteur de travail
+
 const Players = require('../models/Players.js');
 
 const hashPassword = async (plainPassword) => {
@@ -112,6 +113,20 @@ exports.getHome = async (req, res) => {
         }
     } catch (error) {
         console.error('Erreur lors de la récupération de la page d\'accueil :', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+}
+
+exports.getLoading = async (req, res) => {
+    try {
+        // Vérification si l'utilisateur est connecté
+        if (!req.session.user) {
+            res.redirect('/login');
+        } else {
+            res.render('loading', { user: {username: null} });
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération de la page de chargement :', error);
         res.status(500).json({ message: 'Erreur serveur' });
     }
 }

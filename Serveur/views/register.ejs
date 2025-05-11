@@ -13,6 +13,9 @@
     <div class="middle-section">
         <form action="/register" method="POST">
             <h2>Register</h2>
+            <% if (error) { %>
+                <div class="error"> Unavailable username </div>
+            <% } %>
             <input type="text" id="username" name="username" placeholder="Username" required>
             
             <input type="password" name="password" placeholder="Password" required>

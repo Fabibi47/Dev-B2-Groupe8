@@ -4,6 +4,8 @@ const port = 8080;
 const session = require("express-session");
 const body_parser = require('body-parser');
 const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 
 app.use(cors({
     origin: '*'
@@ -25,4 +27,15 @@ app.use(routes);
 
 app.use('/static', express.static('./static'));
 
-app.listen(port, () => console.log(`localhost:${port}/`));
+const wss = new socket({ app });
+wss.on('connection', (ws) => {
+    console.log('Client connected');
+    ws.on('close', () => {
+        console.log('Client disconnected');
+    });
+    ws.on('message', (message) => {
+        
+    });
+});
+
+server.listen(port, () => console.log(`localhost:${port}/`));
