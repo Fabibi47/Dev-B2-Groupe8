@@ -2,7 +2,7 @@ const connection = require('../config/db');
 
 class Waiting {
     static getWaitings(minMMR, maxMMR) {
-        const query = "SELECT player_id FROM Waiting-List JOIN Players ON Waiting-List.player_Id = Players.player_id WHERE matchmakin-rating BETWEEN ? AND ?;";
+        const query = "SELECT Waiting_List.player_id FROM Waiting_List JOIN Players ON Waiting_List.player_id = Players.player_id WHERE matchmaking_rating BETWEEN ? AND ?;";
         return new Promise((resolve, reject) => {
             connection.query(query, [minMMR, maxMMR], (err, results) => {
                 if (err) {
@@ -15,7 +15,7 @@ class Waiting {
     }
 
     static delWaiting(id) {
-        const query = "DELETE FROM Waiting-List WHERE player_id = ?;";
+        const query = "DELETE FROM Waiting_List WHERE player_id = ?;";
         return new Promise((resolve, reject) => {
             connection.query(query, [id], (err, results) => {
                 if (err) {
@@ -28,7 +28,7 @@ class Waiting {
     }
 
     static createWaiting(id) {
-        const query = "INSERT INTO Waiting-List (player_id) VALUES (?);";
+        const query = "INSERT INTO Waiting_List (player_id) VALUES (?);";
         return new Promise((resolve, reject) => {
             connection.query(query, [id], (err, results) => {
                 if (err) {

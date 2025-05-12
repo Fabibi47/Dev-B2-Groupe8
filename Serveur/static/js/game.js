@@ -15,6 +15,10 @@ let winner = null;
 const socket = new WebSocket("ws://localhost:8080");
 
 socket.addEventListener("open", () => {
+    socket.send(JSON.stringify({
+        type: "start",
+
+    }));
     console.log("WebSocket connection established");
 });
 

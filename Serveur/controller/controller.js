@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10; // Facteur de travail
 
 const Players = require('../models/Players.js');
+const Games = require('../models/Games.js');
+const Waiting = require('../models/Waiting.js');
 
 const hashPassword = async (plainPassword) => {
     try {
@@ -27,7 +29,9 @@ const comparePassword = async (plainPassword, hashedPassword) => {
 
 exports.getLogin = async (req, res) => {
     try{
-        // Si l'utilisateur est déjà connecté, il est regirigé vers la page d'accueil
+        if (req.session.user) { 
+            res.redirect('/home');
+        }
         res.render('login', { error: null, user: {username: null} });
     }catch (error) {
         console.error('Erreur lors de la récupération de la page de connexion :', error);
@@ -40,12 +44,12 @@ exports.postLogin = async (req, res) => {
     try {
         const player = await Players.getPlayerByUsername(username);
         if (!player) {
-            res.status(401).json({ message: 'Nom d\'utilisateur ou mot de passe incorrect' });
+            res.redirect('/login');
         }
 
         const isMatch = await comparePassword(password, player.password);
         if (!isMatch) {
-            res.status(401).json({ message: 'Nom d\'utilisateur ou mot de passe incorrect' });
+            res.redirect('/login');
         }
 
         // Authentification réussie
@@ -123,10 +127,84 @@ exports.getLoading = async (req, res) => {
         if (!req.session.user) {
             res.redirect('/login');
         } else {
-            res.render('loading', { user: {username: null} });
+            const player = await Players.getPlayer(req.session.user);
+            const games = await Games.getGameByPlayerId(player.player_id);
+            console.log(games);
+
+            // Si le joueur est déjà dans la liste d'attente, il est redirigé vers la page de jeu
+            if (games) {
+                if (games.length > 0) {
+                    res.redirect('/game');
+                }
+            }
+            res.render('loading', { user: player });
         }
     } catch (error) {
         console.error('Erreur lors de la récupération de la page de chargement :', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+}
+
+exports.getGame = async (req, res) => {
+    try {
+        // Vérification si l'utilisateur est connecté
+        if (!req.session.user) {
+            res.redirect('/login');
+        } else {
+            const player = await Players.getPlayer(req.session.user);
+            const game = await Games.getGameByPlayerId(player.player_id);
+            if (!game) {
+                res.redirect('/home');
+            }
+            if (game.player1_id == player.player_id) {
+                sign = 'X';
+            }
+            else {
+                sign = 'O';
+            }
+            const user = {
+                id: player.player_id,
+                username: player.username,
+                sign: sign
+            };
+
+            let opponent;
+            if (sign == 'X') {
+                opponent = await Players.getPlayer(game.player2_id);
+            } else {
+                opponent = await Players.getPlayer(game.player1_id);
+            }
+
+            
+            const opponentUser = {
+                id: opponent.player_id,
+                username: opponent.username
+            }
+            if (!opponent) {
+                res.redirect('/home');
+            }
+
+            res.render('game', { user: user, game: game, opponent: opponentUser });
+        }
+    } catch (error) {
+        console.error('Erreur lors de la récupération de la page de jeu :', error);
+        res.status(500).json({ message: 'Erreur serveur' });
+    }
+}
+
+exports.getLogout = async (req, res) => {
+    try {
+        // Déconnexion de l'utilisateur
+        req.session.destroy((err) => {
+            if (err) {
+                console.error('Erreur lors de la déconnexion :', err);
+                res.status(500).json({ message: 'Erreur serveur' });
+            } else {
+                res.redirect('/login');
+            }
+        });
+    } catch (error) {
+        console.error('Erreur lors de la déconnexion :', error);
         res.status(500).json({ message: 'Erreur serveur' });
     }
 }
