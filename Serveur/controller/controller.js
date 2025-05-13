@@ -151,7 +151,9 @@ exports.getGame = async (req, res) => {
         if (!req.session.user) {
             res.redirect('/login');
         } else {
+            console.log("session:", req.session.user);
             const player = await Players.getPlayer(req.session.user);
+            console.log("objet db: ", player);
             const game = await Games.getGameByPlayerId(player.player_id);
             if (!game) {
                 res.redirect('/home');
@@ -195,14 +197,7 @@ exports.getGame = async (req, res) => {
 exports.getLogout = async (req, res) => {
     try {
         // Déconnexion de l'utilisateur
-        req.session.destroy((err) => {
-            if (err) {
-                console.error('Erreur lors de la déconnexion :', err);
-                res.status(500).json({ message: 'Erreur serveur' });
-            } else {
-                res.redirect('/login');
-            }
-        });
+        req.session.user = null;
     } catch (error) {
         console.error('Erreur lors de la déconnexion :', error);
         res.status(500).json({ message: 'Erreur serveur' });
